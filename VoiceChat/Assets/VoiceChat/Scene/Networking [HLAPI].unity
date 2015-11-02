@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c888c9d752799134b802c558e4695d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NetworkPort: 7779
+  m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
   m_NetworkAddress: 133.27.170.103

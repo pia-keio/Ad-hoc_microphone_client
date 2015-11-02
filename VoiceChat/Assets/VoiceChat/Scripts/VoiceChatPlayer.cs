@@ -42,7 +42,7 @@ namespace VoiceChat
         {
             int size = VoiceChatSettings.Instance.Frequency * 10;
 
-			audioListener = GameObject.Find("Camera");
+			audioListener = GameObject.Find("FPSController");
 			audioSource = GameObject.Find ("VoiceChat_NetworkProxy(Clone)");
 
             GetComponent<AudioSource>().loop = true;

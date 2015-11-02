@@ -42,6 +42,7 @@ namespace VoiceChat.Networking
             if (isClient && (!isMine || VoiceChatSettings.Instance.LocalDebug))
             {
                 gameObject.AddComponent<AudioSource>();
+				//gameObject.AddComponent<Cube>();
                 player = gameObject.AddComponent<VoiceChatPlayer>();
             }
         }

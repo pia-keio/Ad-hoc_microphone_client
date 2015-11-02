@@ -44,6 +44,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -109,6 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b1242259e779d4cb4fc25b48201e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioListener: {fileID: 0}
+  audioSource: {fileID: 0}
+  ThreeD: 1
   playbackDelay: 2
 --- !u!1001 &100100000
 Prefab:
