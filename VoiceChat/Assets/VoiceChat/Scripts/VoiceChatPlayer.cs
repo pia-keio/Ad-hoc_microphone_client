@@ -23,11 +23,17 @@ namespace VoiceChat
 		Vector3 ListenerPosition;
 		float sourceVolume = 10;
 		float PanThreshold = 1;
-		public bool ThreeD = true;
+		//public bool ThreeD = true;
+
+		bool inTrigger =  true;
+		bool focus = false;
+		//float volume = GetComponent<AudioSource>().volume;
+
+
 
 		//------------------
 
-		//GameObject cm = GameObject.Find("Camera");
+
 
 
         [SerializeField]
@@ -40,10 +46,11 @@ namespace VoiceChat
 
         void Start()
         {
+
             int size = VoiceChatSettings.Instance.Frequency * 10;
 
 			audioListener = GameObject.Find("FPSController");
-			audioSource = GameObject.Find ("VoiceChat_NetworkProxy(Clone)");
+			audioSource = GameObject.Find("VoiceChat_NetworkProxy(Clone)");
 
             GetComponent<AudioSource>().loop = true;
             GetComponent<AudioSource>().clip = AudioClip.Create("VoiceChat", size, 1, VoiceChatSettings.Instance.Frequency, false);
@@ -57,50 +64,64 @@ namespace VoiceChat
 
         void Update()
         {
-            if (GetComponent<AudioSource>().isPlaying)
-            {
-                // Wrapped around
-                if (lastTime > GetComponent<AudioSource>().time)
-                {
-                    played += GetComponent<AudioSource>().clip.length;
-                }
+			if (GetComponent<AudioSource> ().isPlaying) {
+				// Wrapped around
+				if (lastTime > GetComponent<AudioSource> ().time) {
+					played += GetComponent<AudioSource> ().clip.length;
+				}
 
-                lastTime = GetComponent<AudioSource>().time;
+				lastTime = GetComponent<AudioSource> ().time;
 
 
-                // Check if we've played to far
-                if (played + GetComponent<AudioSource>().time >= received)
-                {
-                    Stop();
-                    shouldPlay = false;
-                }
-            }
-            else
-            {
-                if (shouldPlay)
-                {
-                    playDelay -= Time.deltaTime;
+				// Check if we've played to far
+				if (played + GetComponent<AudioSource> ().time >= received) {
+					Stop ();
+					shouldPlay = false;
+				}
+			} else {
+				if (shouldPlay) {
+					playDelay -= Time.deltaTime;
 
-                    if (playDelay <= 0)
-                    {
-                        GetComponent<AudioSource>().Play();
-                    }
-                }
-            }
+					if (playDelay <= 0) {
+						GetComponent<AudioSource> ().Play ();
+					}
+				}
+			}
 //--------------------------
-			if(ThreeD == true){
-				ListenerDistance = Vector3.Distance(transform.position, audioListener.transform.position);
-				ListenerPosition = audioListener.transform.InverseTransformPoint(transform.position);
-
-				GetComponent<AudioSource>().volume = (sourceVolume / 100 / (ListenerDistance * VolumeFallOff));
-				GetComponent<AudioSource>().panStereo= (ListenerPosition.x / PanThreshold);
-
-			}
+			//if (ThreeD == true) {
+				ListenerDistance = Vector3.Distance (transform.position, audioListener.transform.position);
+				ListenerPosition = audioListener.transform.InverseTransformPoint (transform.position);
+			if (focus == true) {
+				GetComponent<AudioSource> ().volume = (sourceVolume / 50);
+		    }
 			else{
-				GetComponent<AudioSource>().volume = (sourceVolume/100);
+				GetComponent<AudioSource> ().volume = (sourceVolume / 100 / (ListenerDistance * VolumeFallOff));
 			}
+			
+				GetComponent<AudioSource> ().panStereo = (ListenerPosition.x / PanThreshold);
+
+			//} 
+			//else {
+			//	GetComponent<AudioSource> ().volume = (sourceVolume / 100);
+			//}
 //-------------------------
+		  
         }
+
+		public void OnTriggerEnter(Collider collision)
+		{
+			if(collision.tag == "EyeSight"){
+				focus = true;
+				Debug.Log("cube1 hit OnCollisionEnter with " + collision.gameObject);
+			}
+		}
+
+		public void OnTriggerExit(Collider collision)
+		{
+			if(collision.tag == "EyeSight"){
+			   focus = false;
+			}
+		}
 
         void Stop()
         {

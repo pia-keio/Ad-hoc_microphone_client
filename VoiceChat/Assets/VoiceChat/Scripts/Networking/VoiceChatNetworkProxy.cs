@@ -24,6 +24,8 @@ namespace VoiceChat.Networking
 
         void Start()
         {
+			//GetComponent<Renderer>().enabled = false;
+
             if (isMine)
             {
                 VoiceChatRecorder.Instance.NewSample += OnNewSample;
